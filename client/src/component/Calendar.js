@@ -205,7 +205,7 @@ export default function (props) {
         <div className='text-center'>
           <Popup trigger=
             {<Button className='text-black' style={{ backgroundColor: 'skyblue' }}><i className='fa fa-plu'></i>𝐒𝐜𝐡𝐞𝐝𝐮𝐥𝐞 𝐌𝐞𝐞𝐭𝐢𝐧𝐠</Button>}
-            position="bottom right" backgroundColor="black" >
+            position="bottom middle" backgroundColor="black" >
             <div>
               <form onSubmit={handleclick} style={{ backgroundColor: 'pink', padding: '20px', borderRadius: '5px', width: '350px' }}>
                 {/* <label style={{ display: 'block', marginBottom: '10px', color: '#444' }}>Hi, {localStorage.getItem("email").split("@")[0]} Please book your Event</label> */}
