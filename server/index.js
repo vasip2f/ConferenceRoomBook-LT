@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 app.use(cors());
-const corsOptions = {
+const corsOptions = { 
   origin: "https://conference-room-booking-fe.onrender.com", // frontend URI (ReactJS)
 }
 const bodyParser = require("body-parser");
