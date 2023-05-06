@@ -29,17 +29,14 @@ function Login() {
     axios  
       .post("https://conference-room-booking-be.onrender.com/user/login", data)
       .then((res) => {
-        alert("Login Success")
+        alert("Login Success 😊")
         console.log(res);
-        // localStorage.clear();
         localStorage.setItem("token", JSON.stringify(res.data.token));
         localStorage.setItem('objectId', JSON.stringify(res.data.user['_id']))
-        // const objectId = res.data.user._id;
-        // localStorage.setItem("objectId",objectId);
         navigate("/Dashboard");
       })
       .catch((err) => {
-        alert("Login Fail invalid credientials")
+        alert("Login Fail invalid credientials 😫")
         console.log(err);
       });
   }
@@ -79,13 +76,6 @@ function Login() {
                 placeholder="Enter Your Password"
                 className="border border-zinc-400 outline-none px-6 py-2 text-black w-full"
               />
-              {/* <button
-                type="button"
-                onClick={toggleShowPassword}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2"
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button> */}
               <button
                 type="button"
                 onClick={toggleShowPassword}

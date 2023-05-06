@@ -13,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-datetime/css/react-datetime.css';
 import NavbarCalendar from '../pages/NavbarCalendar';
 import moment from 'moment-timezone';
+import { useNavigate } from "react-router-dom";
 
 export default function (props) {
 
@@ -22,6 +23,7 @@ export default function (props) {
   const [StartTime, setStartTime] = useState(new Date());
   const [EndTime, setEndTime] = useState(new Date());
   const [availability, setAvailability] = useState(true);
+  const navigate = useNavigate();
 
   const objectId = localStorage.getItem('objectId');
   const userid = objectId.replace(/^"(.*)"$/, '$1');
@@ -55,30 +57,6 @@ export default function (props) {
   const [id, setId] = useState("");
 
 
-
-  // const handleclick = async (event) => {
-  //   event.preventDefault();
-  //   const payload = {
-  //     username: username,
-  //     title: title,
-  //     roomName: roomName,
-  //     StartTime: new Date(StartTime).toISOString(),
-  //     EndTime: new Date(EndTime).toISOString(),
-  //     availability: availability,
-  //     User: User
-
-  //   }
-  //   const config = { headers: { "Content-Type": "Application/json" } }
-  //   await axios.post('http://localhost:4000/create-event', payload, config)
-
-  //     .then(() => { alert("Event is Confirmed") })
-  //     .catch((e) => { alert("The slot is already booked") })
-  //     .catch((e) => { alert("EndTime cannot be less than StartTime") })
-  //   window.location.reload()
-
-
-  // }
-
   const handleclick = async (event) => {
     event.preventDefault();
     const payload = {
@@ -93,13 +71,15 @@ export default function (props) {
     const config = { headers: { "Content-Type": "application/json" } }
     try {
       await axios.post('https://conference-room-booking-be.onrender.com/create-event', payload, config);
-      alert("Event is Confirmed");
-      window.location.reload();
+      alert("Event is Confirmed 😊");
+      // window.location.reload();
+      navigate("/Dashboard");
     } catch (e) {
       if (e.response.status === 409) {
-        alert("The slot is already booked");
+        alert("The slot is already booked ☹️");
       } else {
-        alert("The slot is already booked");
+        alert("The slot is already booked ☹️");
+        navigate("/Calendar");
         // window.location.reload();
       }
     }
@@ -119,16 +99,10 @@ export default function (props) {
 
   }, [])
 
-  //this api Display Event 
 
-  // const id = localStorage.getItem('objectId')
-  // let myString = id.replace(/^"(.*)"$/, '$1');
-  // console.log(myString)
 
   useEffect(() => {
-    // const id = localStorage.getItem('objectId')
-    // let myString = id.replace(/^"(.*)"$/, '$1');
-    // console.log(myString)
+
     const objectId = localStorage.getItem('objectId');
     const myString = objectId.replace(/^"(.*)"$/, '$1');
     console.log("Hello wolld")
@@ -142,30 +116,15 @@ export default function (props) {
       .catch((e) => { console.log(e) })
   }, [])
 
-  // useEffect(() => {
-  //   
-  //   axios.get(`http://localhost:4000/get-events/${objectId}`)
-  //     .then((d) => {
-  //       setEventData(d.data)
-  //       console.log(d)
-  //     })
-
-  //     .catch((e) => { console.log(e) })
-  // }, [])
-
-
-
-
-
   //Update the Event
   const handleEdit = (e) => {
     e.preventDefault();
     const Credentials = {
-            title,
-            roomName,
-            StartTime: moment(StartTime).tz('Asia/Kolkata').format(),
-            EndTime: moment(EndTime).tz('Asia/Kolkata').format(),
-            availability
+      title,
+      roomName,
+      StartTime: moment(StartTime).tz('Asia/Kolkata').format(),
+      EndTime: moment(EndTime).tz('Asia/Kolkata').format(),
+      availability
     }
     console.log(Credentials.StartTime)
     console.log(Credentials.EndTime)
@@ -207,8 +166,7 @@ export default function (props) {
             {<Button className='text-black' style={{ backgroundColor: 'skyblue' }}><i className='fa fa-plu'></i>𝐒𝐜𝐡𝐞𝐝𝐮𝐥𝐞 𝐌𝐞𝐞𝐭𝐢𝐧𝐠</Button>}
             position="bottom middle" backgroundColor="black" >
             <div>
-              <form onSubmit={handleclick} style={{ backgroundColor: 'pink', padding: '20px', borderRadius: '5px', width: '350px' }}>
-                {/* <label style={{ display: 'block', marginBottom: '10px', color: '#444' }}>Hi, {localStorage.getItem("email").split("@")[0]} Please book your Event</label> */}
+              <form onSubmit={handleclick} style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '5px', width: '350px' }}>
                 <label style={{ display: 'block', marginBottom: '10px', color: '#444', fontFamily: 'Arial', fontSize: '20px' }}>
                   Hi, <span style={{ color: '#FF5733', fontWeight: 'bold' }}>{localStorage.getItem("email").split("@")[0]}</span>
                   <span style={{ color: '#2980B9', fontWeight: 'bold' }}> Please book your Event</span>
@@ -222,14 +180,6 @@ export default function (props) {
                   style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '15px' }}
                 />
 
-                {/* <input
-                  type="email"
-                  value={localStorage.getItem("email")}
-                  required='please enter your name'
-                  style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '15px' }}
-                  disabled
-                /> */}
-
                 <input
                   type="text"
                   value={User}
@@ -239,7 +189,7 @@ export default function (props) {
                   style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '15px' }}
                 />
 
-                <label style={{ display: 'block', marginBottom: '10px', color: '#444' }}>Enter Event Title</label>
+                <label style={{ display: 'block', marginBottom: '10px', color: '#444' }}>𝕰𝖓𝖙𝖊𝖗 𝕰𝖛𝖊𝖓𝖙 𝕿𝖎𝖙𝖑𝖊✍</label>
                 <input
                   type="text"
                   value={title}
@@ -247,7 +197,7 @@ export default function (props) {
                   required='please provide a title'
                   style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '15px' }}
                 />
-                <label style={{ display: 'block', marginBottom: '10px', color: '#444' }}>Select Room</label>
+                <label style={{ display: 'block', marginBottom: '10px', color: '#444' }}>𝓢𝓮𝓵𝓮𝓬𝓽 𝓡𝓸𝓸𝓶</label>
                 <select
                   value={roomName}
                   onChange={e => setroomName(e.target.value)}
@@ -261,7 +211,7 @@ export default function (props) {
                   <option value="Booth Two">Booth Two</option>
                 </select>
                 <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '15px' }}>
-                  <label style={{ marginBottom: '10px', color: '#444' }}>Start Time</label>
+                  <label style={{ marginBottom: '10px', color: '#444' }}>𝓢𝓽𝓪𝓻𝓽 ⏰</label>
                   <Datetime
                     value={StartTime}
                     onChange={date => setStartTime(date)}
@@ -270,7 +220,7 @@ export default function (props) {
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '15px' }}>
-                  <label style={{ marginBottom: '10px', color: '#444' }}>End Time</label>
+                  <label style={{ marginBottom: '10px', color: '#444' }}>𝓔𝓷𝓭 ⏰</label>
                   <Datetime
                     value={EndTime}
                     onChange={date => setEndTime(date)}
@@ -280,7 +230,7 @@ export default function (props) {
                 </div>
                 <button
                   type="submit"
-                  style={{ background: '#444', color: '#fff', padding: '10px 20px', borderRadius: '3px', border: 'none' }}>Add Event</button>
+                  style={{ background: '#444', color: '#fff', padding: '10px 20px', borderRadius: '3px', border: 'none' }}>𝒜𝒹𝒹 𝐸𝓋𝑒𝓃𝓉</button>
               </form>
             </div>
 
@@ -323,11 +273,8 @@ export default function (props) {
         <div className='row'>
           <div className='mt-5 mb-4'>
 
-            <h2 className='text-center'>🅴🆅🅴🅽🆃🆂</h2>
+            <h2 className='text-center'>🆈🅾🆄🆁 🅴🆅🅴🅽🆃🆂</h2>
 
-            {/* <Button varient='primary' onClick={() => { handlePostShow() }} ><i className='fa fa-plu'></i>Add New event</Button> */}
-
-            {/* <Button varient='primary'  onClick={() => { handlePostShow() }} ><i className='fa fa-plu'></i>Add New event</Button> */}
 
           </div>
         </div>
@@ -454,19 +401,16 @@ export default function (props) {
                   <div className='form-group mt-3'>
                     <label style={{ color: "blue" }}>StartTime</label>
                     <Datetime value={StartTime} required onChange={date => setStartTime(date)} />
-                    {/* <Datetime type='text' className='form-control' value={StartTime} onChange={Datetime => setStartTime(Datetime)} placeholder='Event Start Time' /> */}
                   </div>
                 </div>
                 <div>
                   <div className='form-group mt-3'>
                     <label style={{ color: "blue" }}>EndTime</label>
                     <Datetime value={EndTime} required onChange={date => setEndTime(date)} />
-                    {/* <Datetime type='text' className='form-control' value={EndTime} onChange={Datetime => setEndTime(Datetime)} placeholder='Event End Time' /> */}
                   </div>
                 </div>
 
                 <Button type='submit' className='btn btn-success mt-4' onClick={handleclick}>Add new Event</Button>
-                {/* <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmit}>Add new Event</Button> */}
 
               </div>
             </Modal.Body>
@@ -502,7 +446,6 @@ export default function (props) {
                     style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '15px' }}
                   />
 
-                  {/* <input type='text' className='form-control' required='Enter your Title' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Please Enter your Title' defaultValue={RowData.title} /> */}
                 </div>
 
                 <div>
@@ -518,15 +461,7 @@ export default function (props) {
                     <option value="Booth One">Booth One</option>
                     <option value="Booth Two">Booth Two</option>
                   </select>
-                  {/* <div className='form-group mt-3'>
-                                    <label style={{ color: "blue" }}>Select your Room</label>
-                                    <select placeholder="Select Room" required='please Select a room' value={roomName}  onChange={e => setroomName(e.target.value)} defaultValue={RowData.roomName}>
-                                        <option>Big Room</option>
-                                        <option>Small Room</option>
-                                        <option>Booth One</option>
-                                        <option>Booth Two</option>
-                                    </select>
-                                </div> */}
+
                 </div>
                 <div>
                   <div className='form-group mt-3'>
@@ -537,7 +472,6 @@ export default function (props) {
                       defaultValue={RowData.StartTime}
                       style={{ padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '5px' }}
                     />
-                    {/* <Datetime type='text' required="start time is missing" className='form-control' value={StartTime} onChange={(e) => setStartTime(e)} placeholder='Event Start Time' defaultValue={RowData.StartTime} /> */}
                   </div>
                 </div>
                 <div>
@@ -549,7 +483,6 @@ export default function (props) {
                       defaultValue={RowData.EndTime}
                       style={{ padding: '8px', border: '1px solid #ccc', borderRadius: '3px', marginBottom: '5px' }}
                     />
-                    {/* <Datetime type='text' required="end time is missing" className='form-control' value={EndTime} onChange={(e) => setEndTime(e)} placeholder='Event End Time' defaultValue={RowData.EndTime} /> */}
                   </div>
                 </div>
                 <Button type='submit' style={{ backgroundColor: 'skyblue' }} className='btn btn-warning mt-4'>Update</Button>
