@@ -134,7 +134,7 @@ export default function (props) {
         setData(d.data)
       })
       .catch((e) => { console.log(e) })
-      navigate("/Calendar");
+      navigate("/Dashboard");
     // window.location.reload();
 
   }
@@ -148,7 +148,7 @@ export default function (props) {
         setData(d.data)
       })
       .catch((e) => { console.log(e) })
-      navigate("/Calendar");
+      navigate("/Dashboard");
     // window.location.reload();
 
   }
