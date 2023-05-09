@@ -8,13 +8,15 @@ import PrivateRoute from "./PrivateRoute";
 import Modal from 'react-modal';
 import Dashboard from "./component/Dashboard";
 import Calendar from "./component/Calendar";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 
 function App() {
   return (
-    <div className="App">  
-
+    <div className="App">
+      <ToastContainer />
 
       <Routes>
         <Route path="/register" element={<Register />} />
@@ -24,7 +26,7 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/calendar" element={<Calendar />} />
-         
+
 
         </Route>
       </Routes>

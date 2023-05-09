@@ -4,6 +4,7 @@ import '../App.css';
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
+import { toast } from "react-toastify";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -23,14 +24,22 @@ function Register() {
     axios
       .post("https://conference-room-booking-be.onrender.com/user/signup", data)
       .then((res) => {
-        alert("Registration is Success")
+        toast.success("Registration is Success 😊", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
         console.log(res);
         localStorage.clear();
         localStorage.setItem("token", JSON.stringify(res.data.token));
         navigate("/login");
       })
       .catch((err) => {
-        alert("Email is already Exist!")
+        toast.error("Email is already Exist!")
         console.log(err);
       });
   }

@@ -119,6 +119,8 @@ import Navbar from "./Navbar";
 import '../App.css';
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Clock from "./Clock";
 
 
@@ -151,14 +153,22 @@ function Login() {
     axios
       .post("https://conference-room-booking-be.onrender.com/user/login", data)
       .then((res) => {
-        alert("Login Success 😊")
+        toast.success("Login Success 😊", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
         console.log(res);
         localStorage.setItem("token", JSON.stringify(res.data.token));
         localStorage.setItem('objectId', JSON.stringify(res.data.user['_id']))
         navigate("/Dashboard");
       })
       .catch((err) => {
-        alert("Login Fail invalid credientials 😫")
+        toast.error("Login Fail invalid credientials 😫")
         console.log(err);
       });
   }

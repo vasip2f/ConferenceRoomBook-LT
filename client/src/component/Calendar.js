@@ -14,6 +14,8 @@ import 'react-datetime/css/react-datetime.css';
 import NavbarCalendar from '../pages/NavbarCalendar';
 import moment from 'moment-timezone';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function (props) {
 
@@ -60,7 +62,7 @@ export default function (props) {
   const handleclick = async (event) => {
     event.preventDefault();
     if (moment(EndTime).isBefore(moment(StartTime))) {
-      alert("EndTime cannot be less than StartTime");
+      toast.error("EndTime cannot be less than StartTime");
       return;
     }
     const payload = {
@@ -75,14 +77,22 @@ export default function (props) {
     const config = { headers: { "Content-Type": "application/json" } }
     try {
       await axios.post('https://conference-room-booking-be.onrender.com/create-event', payload, config);
-      alert("Event is Confirmed 😊");
+      toast.success("Event is Confirmed 😊", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
       // window.location.reload();
       navigate("/Dashboard");
     } catch (e) {
       if (e.response.status === 409) {
-        alert("The slot is already booked ☹️");
+        toast.error("The slot is already booked ☹️");
       } else {
-        alert("The slot is already booked ☹️");
+        toast.error("The slot is already booked ☹️");
         navigate("/Calendar");
         // window.location.reload();
       }
@@ -124,7 +134,7 @@ export default function (props) {
   const handleEdit = (e) => {
     e.preventDefault();
     if (moment(EndTime).isBefore(moment(StartTime))) {
-      alert("EndTime cannot be less than StartTime");
+      toast.error("EndTime cannot be less than StartTime");
       return;
     }
     const Credentials = {
@@ -139,7 +149,15 @@ export default function (props) {
     axios.put(`https://conference-room-booking-be.onrender.com/update-event/${id}`, Credentials)
       .then((d) => {
         setData(d.data)
-          alert("Event updated successfully");
+        toast.success("Event updated successfully 😊", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((e) => { console.log(e) })
     navigate("/Dashboard");
@@ -154,7 +172,15 @@ export default function (props) {
     axios.delete(`https://conference-room-booking-be.onrender.com/delete-event/${id}`)
       .then((d) => {
         setData(d.data)
-          alert("Event deleted");
+        toast.success("Event deleted successfully 😊", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((e) => { console.log(e) })
     navigate("/Dashboard");
