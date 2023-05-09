@@ -161,7 +161,7 @@ export default function () {
                                     <tr key={item._id}>
                                         <td>{item.title}</td>
                                         <td>{item.roomName}</td>
-                                        <td>{item.StartTime}</td>
+                                        <td>{item.StartTime}</td>   
                                         <td>{item.EndTime}</td>
                                         <td>{item.username}</td>
                                     </tr>

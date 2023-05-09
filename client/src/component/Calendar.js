@@ -59,6 +59,10 @@ export default function (props) {
 
   const handleclick = async (event) => {
     event.preventDefault();
+    if (moment(EndTime).isBefore(moment(StartTime))) {
+      alert("EndTime cannot be less than StartTime");
+      return;
+    }
     const payload = {
       username: username,
       title: title,
@@ -119,6 +123,10 @@ export default function (props) {
   //Update the Event
   const handleEdit = (e) => {
     e.preventDefault();
+    if (moment(EndTime).isBefore(moment(StartTime))) {
+      alert("EndTime cannot be less than StartTime");
+      return;
+    }
     const Credentials = {
       title,
       roomName,
@@ -130,11 +138,11 @@ export default function (props) {
     console.log(Credentials.EndTime)
     axios.put(`https://conference-room-booking-be.onrender.com/update-event/${id}`, Credentials)
       .then((d) => {
-
         setData(d.data)
+          alert("Event updated successfully");
       })
       .catch((e) => { console.log(e) })
-      navigate("/Dashboard");
+    navigate("/Dashboard");
     // window.location.reload();
 
   }
@@ -146,9 +154,10 @@ export default function (props) {
     axios.delete(`https://conference-room-booking-be.onrender.com/delete-event/${id}`)
       .then((d) => {
         setData(d.data)
+          alert("Event deleted");
       })
       .catch((e) => { console.log(e) })
-      navigate("/Dashboard");
+    navigate("/Dashboard");
     // window.location.reload();
 
   }
