@@ -183,7 +183,7 @@ function Login() {
 
 
       {/* <Clock /> */}
-      <div className="w-screen h-[90vh] flex  justify-right items-top login-page" >
+      <div className="w-screen h-[90vh] flex  justify-center  items-center login-page" >
 
         <form
           onSubmit={(e) => handleSubmit(e)}

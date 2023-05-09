@@ -42,7 +42,7 @@ function Register() {
     <div >
       <Navbar />
       {/* className="login-page w-screen h-[100vh] flex justify-center items-center" */}
-      <div className="w-screen h-[90vh] flex  justify-right items-top login-page">
+      <div className="w-screen h-[90vh] flex  justify-center  items-top login-page">
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-col  w-[30%]  space-y-4  "
