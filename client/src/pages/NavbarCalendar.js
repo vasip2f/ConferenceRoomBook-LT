@@ -23,10 +23,11 @@ function NavbarCalendar() {
 
 
         <div className="flex items-center justify-between" id="mobile-menu">
-          <div className="text-right">
-            <p className="date-time text-black text-size-10">{date}</p>
-          </div>
+
           <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <div className="text-right">
+              <p className="date-time text-black text-size-10">{date}</p>
+            </div>
             <p className="flex items-center justify-between">W𝖊𝖑𝖈𝖔𝖒𝖊  : {localStorage.getItem("email")}</p>
             <li>
               <NavLink to="/dashboard" className="flex items-center justify-between">𝘿𝙖𝙨𝙝𝙗𝙤𝙖𝙧𝙙</NavLink>
