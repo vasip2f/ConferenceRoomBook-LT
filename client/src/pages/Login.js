@@ -184,14 +184,15 @@ function Login() {
 
       {/* <Clock /> */}
       <div className="w-screen h-[90vh] flex  justify-right items-top login-page" >
+
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="flex flex-col  w-[30%]  space-y-4  "
+          // className="flex flex-col w-[30%]  space-y-4  "
+          className="flex-col w-[35%] space-y-4 "
         >
           <h1 className="text-center text-xl"> 🆂🅸🅶🅽🅸🅽</h1>
           <div className="text-right">
-            <p className="date-time">{date}</p>
-
+            <p className="date-time text-white text-size-10">   </p>
           </div>
           <div className="flex flex-col ">
             <label className="text-xl ">𝐄𝐦𝐚𝐢𝐥</label>
@@ -236,6 +237,10 @@ function Login() {
           </button>
 
         </form>
+
+        {/* <div className="anima-page">
+        </div> */}
+
       </div>
 
     </div>

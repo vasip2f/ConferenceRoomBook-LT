@@ -20,9 +20,19 @@
   }
 
   .login-page {
-    background-image: url('./img/cal.png');
+    background-image: url('./img/pic1.jpg');
     background-size: cover;
     background-position: center;
+  }
+
+  .anima-page {
+    background-image: url('./img/animate.gif');
+    background-size: cover;
+    background-position: cover;
+    width: 300px;
+    height:450px;
+    position: relative;
+    display: inline-block;
   }
 
 
@@ -49,9 +59,9 @@
   
 
   .date-time {
-    font-family: "Times New Roman", serif;
+    font-family: "Times New Roman" serif;
     font-size:30px;
-    color: #333333;
+    color: #e41313;
     letter-spacing: 1px;
     margin-top: 10px;
     
