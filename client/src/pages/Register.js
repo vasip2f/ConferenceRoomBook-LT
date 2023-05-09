@@ -39,13 +39,13 @@ function Register() {
     setPasswordVisible((prev) => !prev);
   }
   return (
-    <div>
+    <div >
       <Navbar />
-
-      <div className=" w-screen h-[80vh] flex  justify-center items-center">
+      {/* className="login-page w-screen h-[100vh] flex justify-center items-center" */}
+      <div className="w-screen h-[90vh] flex  justify-right items-top login-page">
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="flex flex-col  w-[50%]  space-y-4  "
+          className="flex flex-col  w-[30%]  space-y-4  "
         >
           <h1 className="text-xl text-center ">🆂🅸🅶🅽🆄🅿</h1>
           <div className="flex flex-col ">

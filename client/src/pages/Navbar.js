@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav style={{ backgroundColor: 'pink' }}>
+    <nav fix='top' className="w-screen h-[10vh] flex justify-center items-center" style={{ backgroundColor: 'pink' }}>
       <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
         <div className="flex items-center justify-between">
           <Link className="text-black text-xl font-semibold text-gray-100">𝕮𝖔𝖓𝖋𝖊𝖗𝖊𝖓𝖈𝖊 𝕽𝖔𝖔𝖒  𝕭𝖔𝖔𝓚𝖎𝖓𝖌</Link>
