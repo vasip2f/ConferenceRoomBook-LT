@@ -146,6 +146,11 @@ const UpdateEvent = async (req, res) => {
                 event[update] = req.body[update];
             }
         });
+
+        // Check if EndTime is less than or equal to StartTime
+        if (moment(event.EndTime).isSameOrBefore(event.StartTime)) {
+            return res.status(400).send({ error: 'EndTime must be greater than StartTime!' });
+        }
         console.log(updates)
       
 
