@@ -16,13 +16,37 @@ function Register() {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    // Perform client-side validation
+    if (userName.trim() === '') {
+      toast.error("Please enter your username");
+      return;
+    }
+
+    if (email.trim() === '') {
+      toast.error("Please enter your email");
+      return;
+    }
+
+    if (password.trim() === '') {
+      toast.error("Please enter your password");
+      return;
+    }
+
+  
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
     const data = {
       username: userName,
       email: email,
       password: password,
     };
     axios
-      .post("https://conference-room-booking-be.onrender.com/user/signup", data)
+      .post("http://localhost:9002/user/signup", data)
       .then((res) => {
         toast.success("Registration is Success 😊", {
           position: toast.POSITION.TOP_RIGHT,
@@ -39,7 +63,11 @@ function Register() {
         navigate("/login");
       })
       .catch((err) => {
-        toast.error("Email is already Exist!")
+        if (err.response && err.response.data && err.response.data.message) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("An error occurred during registration");
+        }
         console.log(err);
       });
   }
@@ -77,16 +105,7 @@ function Register() {
               className=" border border-zinc-400 outline-none  px-6 py-2 text-black "
             />
           </div>
-          {/* <div className="flex flex-col ">
-            <label className="text-xl ">𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝</label>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              required="Please enter Your Password"
-              placeholder="Enter Your Password"
-              className=" border border-zinc-400 outline-none  px-6 py-2 text-black "
-            />
-          </div> */}
+
           <div className="flex flex-col ">
             <label className="text-xl ">𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝</label>
             <div className="relative">
@@ -97,13 +116,7 @@ function Register() {
                 placeholder="Enter Your Password"
                 className="border border-zinc-400 outline-none px-6 py-2 text-black w-full"
               />
-              {/* <button
-                type="button"
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-2 focus:outline-none"
-                onClick={togglePasswordVisibility}
-              >
-                {passwordVisible ? "Hide" : "Show"}
-              </button> */}
+
               <button
                 type="button"
                 onClick={togglePasswordVisibility}

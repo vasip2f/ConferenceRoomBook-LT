@@ -11,6 +11,7 @@ import axios from 'axios';
 import *as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../index.css';
+import '../App.css';
 
 
 
@@ -61,7 +62,7 @@ export default function () {
             availability: availability
         }
         const config = { headers: { "Content-Type": "Application/json" } }
-        await axios.post('https://conference-room-booking-be.onrender.com/create-event', payload, config)
+        await axios.post('http://localhost:9002/create-event', payload, config)
             .then(() => { alert("Event is Confirmed") })
             .catch((e) => { alert("The slot is already booked") })
             // window.location.reload()
@@ -72,7 +73,7 @@ export default function () {
 
 
     useEffect(() => {
-        axios.get('https://conference-room-booking-be.onrender.com/get-events')
+        axios.get('http://localhost:9002/get-events')
             .then((d) => {
                 const cdata = d.data.map(item => {
                     return { username: item.username, title: item.title, date: item.StartTime }
@@ -90,9 +91,15 @@ export default function () {
     //this api Display Event 
 
     useEffect(() => {
-        axios.get('https://conference-room-booking-be.onrender.com/get-events')
+        axios.get('http://localhost:9002/get-events')
             .then((d) => {
                 setEventData(d.data)
+                const startTime = d.data[0].StartTime;
+                const endTime = d.data[0].EndTime;
+
+                // const formattedStartTime = startTime.split('T').join(' ');
+                // const formattedEndTime = endTime.split('T').join(' ');
+
             })
             .catch((e) => { console.log(e) })
 
@@ -102,7 +109,7 @@ export default function () {
     //Update the Event
     const handleEdit = () => {
         const Credentials = { title, roomName, StartTime, EndTime, availability }
-        axios.put(`https://conference-room-booking-be.onrender.com/update-event/${id}`, Credentials)
+        axios.put(`http://localhost:9002/update-event/${id}`, Credentials)
             .then((d) => {
                 setData(d.data)
             })
@@ -115,7 +122,7 @@ export default function () {
 
     const handleDelete = () => {
 
-        axios.delete(`https://conference-room-booking-be.onrender.com/delete-event/${id}`)
+        axios.delete(`http://localhost:9002/delete-event/${id}`)
             .then((d) => {
                 setData(d.data)
             })
@@ -155,18 +162,48 @@ export default function () {
 
                             </tr>
                         </thead>
-                        <tbody>
+                        {/* <tbody>
                             {
                                 eventData.map((item) =>
                                     <tr key={item._id}>
                                         <td>{item.title}</td>
                                         <td>{item.roomName}</td>
-                                        <td>{item.StartTime}</td>   
-                                        <td>{item.EndTime}</td>
+
+                                        <td>{item.StartTime.split('T').join(' ').slice(0, -5)}
+                                        <td className="clock-animation">🕒</td>
+                                        </td>
+                                        <td>{item.EndTime.split('T').join(' ').slice(0, -5)}
+                                        <td className="clock-animation">🕒</td>
+                                        </td>
+                                        
                                         <td>{item.username}</td>
                                     </tr>
                                 )}
+                        </tbody> */}
+
+                        <tbody>
+                            {eventData.map((item) =>
+                                <tr key={item._id}>
+                                    <td>{item.title}</td>
+                                    <td>{item.roomName}</td>
+                                    <td>
+                                        {item.StartTime.split('T').join(' ⋆ ').slice(0, -5)}
+                                       
+                                        <span className="clock-animation">🕒</span>
+                                    </td>
+                                    <td>
+                                        {item.EndTime.split('T').join(' ⋆ ').slice(0, -5)}
+                                        
+                                        <span className="clock-animation">🕒</span>
+                                    </td>
+                                    <td>{item.username}</td>
+                                </tr>
+                            )}
                         </tbody>
+
+
+
+
                     </table>
                 </div>
             </div>

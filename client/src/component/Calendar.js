@@ -18,18 +18,23 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function (props) {
-
+  // localStorage.getItem("email").split("@")[0]
   const [username, setuserName] = useState(localStorage.getItem("email").split("@")[0]);
+  const [Emailusername, setEmailusername] = useState(localStorage.getItem("email"));
   const [title, setTitle] = useState("");
   const [roomName, setroomName] = useState("Big Room");
   const [StartTime, setStartTime] = useState(new Date());
   const [EndTime, setEndTime] = useState(new Date());
   const [availability, setAvailability] = useState(true);
+  const [loginusername, setLoginUsername] = useState("")
   const navigate = useNavigate();
+
 
   const objectId = localStorage.getItem('objectId');
   const userid = objectId.replace(/^"(.*)"$/, '$1');
   const [User, setUser] = useState(userid);
+
+  const [eventid, setEventid] = useState()
 
   const [Data, setData] = useState([]); // store the post data
   const [eventData, setEventData] = useState([]); // store the Display data
@@ -72,11 +77,14 @@ export default function (props) {
       StartTime: moment(StartTime).tz('Asia/Kolkata').format(),
       EndTime: moment(EndTime).tz('Asia/Kolkata').format(),
       availability: availability,
-      User: User
+      User: User,
+
     }
+
     const config = { headers: { "Content-Type": "application/json" } }
     try {
-      await axios.post('https://conference-room-booking-be.onrender.com/create-event', payload, config);
+      const { data } = await axios.post('http://localhost:9002/create-event', payload, config);
+      localStorage.setItem("eventid", data.eventId)
       toast.success("Event is Confirmed 😊", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 2000,
@@ -86,6 +94,19 @@ export default function (props) {
         draggable: true,
         progress: undefined,
       });
+      console.log(data)
+
+
+
+      try {
+        const eventId = localStorage.getItem("eventid")
+        console.log(eventId)
+        await axios.post(`http://localhost:9002/send/${username}/${Emailusername}`)
+        toast.success("Check Your Confirmation Email")
+      } catch (error) {
+        toast.error("Unable to send Email")
+      }
+
       // window.location.reload();
       navigate("/Dashboard");
     } catch (e) {
@@ -96,15 +117,30 @@ export default function (props) {
         navigate("/Calendar");
         // window.location.reload();
       }
+
     }
   }
 
+  //display user details
+
+
+  useEffect(() => {
+    axios.get(`http://localhost:9002/user/getusers/${User}`)
+      .then((d) => {
+        const cdata = d.data.username
+        setData(cdata)
+        console.log(cdata)
+      })
+      .catch((e) => { console.log(e) })
+
+  }, [])
+
   //Calendar Display
   useEffect(() => {
-    axios.get('https://conference-room-booking-be.onrender.com/get-events')
+    axios.get('http://localhost:9002/get-events')
       .then((d) => {
         const cdata = d.data.map(item => {
-          return { username: item.username, title: item.title, date: item.StartTime, EndTime: item.EndTime, User: item.User }
+          return { eventid: item._id, username: item.username, title: item.title, date: item.StartTime, EndTime: item.EndTime, User: item.User }
         })
         setData(cdata)
         console.log(cdata)
@@ -121,7 +157,7 @@ export default function (props) {
     const myString = objectId.replace(/^"(.*)"$/, '$1');
     console.log("Hello wolld")
     console.log(myString)
-    axios.get(`https://conference-room-booking-be.onrender.com/getuserevent/${myString}`)
+    axios.get(`http://localhost:9002/getuserevent/${myString}`)
       .then((d) => {
         setEventData(d.data.events)
         console.log(d)
@@ -131,7 +167,91 @@ export default function (props) {
   }, [])
 
   //Update the Event
-  const handleEdit = (e) => {
+
+  // const handleEdit = (e) => {
+  //   e.preventDefault();
+  //   if (moment(EndTime).isBefore(moment(StartTime))) {
+  //     toast.error("EndTime cannot be less than StartTime");
+  //     return;
+  //   }
+  //   const Credentials = {
+  //     title,
+  //     roomName,
+  //     StartTime: moment(StartTime).tz('Asia/Kolkata').format(),
+  //     EndTime: moment(EndTime).tz('Asia/Kolkata').format(),
+  //     availability
+  //   }
+  //   console.log(Credentials.StartTime)
+  //   console.log(Credentials.EndTime)
+  //   axios.put(`http://localhost:9002/update-event/${id}`, Credentials)
+  //     .then((d) => {
+  //       setData(d.data)
+  //       toast.success("Event updated successfully 😊", {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //         autoClose: 2000,
+  //         hideProgressBar: true,
+  //         closeOnClick: true,
+  //         pauseOnHover: false,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+  //       try {
+  //         await axios.post(`http://localhost:9002/send/${username}/${Emailusername}`)
+  //         toast.success("please check Your Email")
+  //       } catch (error) {
+  //         toast.error("Unable to send Email")
+  //       }
+  //     })
+
+  //     .catch((e) => { console.log(e) })
+  //   navigate("/Dashboard");
+  //   // window.location.reload();
+
+  // }
+
+  // const handleEdit = async (e) => { // Add the 'async' keyword here
+  //   e.preventDefault();
+  //   if (moment(EndTime).isBefore(moment(StartTime))) {
+  //     toast.error("EndTime cannot be less than StartTime");
+  //     return;
+  //   }
+  //   const Credentials = {
+  //     title,
+  //     roomName,
+  //     StartTime: moment(StartTime).tz('Asia/Kolkata').format(),
+  //     EndTime: moment(EndTime).tz('Asia/Kolkata').format(),
+  //     availability
+  //   };
+  //   console.log(Credentials.StartTime);
+  //   console.log(Credentials.EndTime);
+  //   try { // Move the 'try' block inside the async function
+  //     const response = await axios.put(`http://localhost:9002/update-event/${id}`, Credentials);
+  //     setData(response.data);
+  //     toast.success("Event updated successfully 😊", {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //       autoClose: 2000,
+  //       hideProgressBar: true,
+  //       closeOnClick: true,
+  //       pauseOnHover: false,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+
+  //     try {
+  //       await axios.post(`http://localhost:9002/send/${username}/${Emailusername}`);
+  //       toast.success("Check Your mail Event Detail is Updated");
+  //     } catch (error) {
+  //       toast.error("Unable to send Email");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+
+  //   navigate("/Dashboard");
+  //   // window.location.reload();
+  // };
+
+  const handleEdit = async (e) => {
     e.preventDefault();
     if (moment(EndTime).isBefore(moment(StartTime))) {
       toast.error("EndTime cannot be less than StartTime");
@@ -143,33 +263,46 @@ export default function (props) {
       StartTime: moment(StartTime).tz('Asia/Kolkata').format(),
       EndTime: moment(EndTime).tz('Asia/Kolkata').format(),
       availability
-    }
-    console.log(Credentials.StartTime)
-    console.log(Credentials.EndTime)
-    axios.put(`https://conference-room-booking-be.onrender.com/update-event/${id}`, Credentials)
-      .then((d) => {
-        setData(d.data)
-        toast.success("Event updated successfully 😊", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
+    };
+    console.log(Credentials.StartTime);
+    console.log(Credentials.EndTime);
+    try {
+      const response = await axios.put(`http://localhost:9002/update-event/${id}`, Credentials);
+      setData(response.data);
+      toast.success("Event updated successfully 😊", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+
+      try {
+        await axios.post(`http://localhost:9002/send`, {
+          username,
+          Emailusername
         });
-      })
-      .catch((e) => { console.log(e) })
+        toast.success("Check Your mail Event Detail is Updated");
+      } catch (error) {
+        toast.error("Unable to send Email");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
     navigate("/Dashboard");
     // window.location.reload();
+  };
 
-  }
+
 
   //handle delete function
 
   const handleDelete = () => {
 
-    axios.delete(`https://conference-room-booking-be.onrender.com/delete-event/${id}`)
+    axios.delete(`http://localhost:9002/delete-event/${id}`)
       .then((d) => {
         setData(d.data)
         toast.success("Event deleted successfully 😊", {
@@ -334,8 +467,16 @@ export default function (props) {
                     <tr key={item._id}>
                       <td>{item.title}</td>
                       <td>{item.roomName}</td>
-                      <td>{item.StartTime}</td>
-                      <td>{item.EndTime}</td>
+                      <td>
+                        {item.StartTime.split('T').join(' ⋆ ').slice(0, -5)}
+
+                        <span className="clock-animation">🕒</span>
+                      </td>
+                      <td>
+                        {item.EndTime.split('T').join(' ⋆ ').slice(0, -5)}
+
+                        <span className="clock-animation">🕒</span>
+                      </td>
                       <td style={{ minWidth: 190 }}>
                         <Button size='sm' varient='primary' style={{ backgroundColor: 'Green' }} onClick={() => { handleViewShow(setRowData(item)) }}>View</Button>|
                         <Button size='sm' varient='warning' className='text-black' style={{ backgroundColor: 'yellow' }} onClick={() => { handleEditShow(setRowData(item), setId(item._id)) }}>Edit</Button>|
@@ -413,7 +554,7 @@ export default function (props) {
             keyboard={false}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Book Your Conference Meeting</Modal.Title>
+              <Modal.Title>Update Your Meeting</Modal.Title>
 
             </Modal.Header>
             <Modal.Body>
@@ -468,7 +609,7 @@ export default function (props) {
             keyboard={false}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Book Your Conference Meeting</Modal.Title>
+              <Modal.Title>Update Your Meeting</Modal.Title>
 
             </Modal.Header>
             <Modal.Body>

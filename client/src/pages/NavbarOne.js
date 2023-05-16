@@ -18,7 +18,7 @@ function NavbarOne() {
   }, []);
 
   return (
-    <nav className="w-full flex justify-center items-center" style={{ backgroundColor: 'pink' }}>
+    <nav className="w-full flex justify-center items-center" style={{ backgroundColor: 'lightblue' }}>
       <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
         <div className="flex items-center justify-between">
           <span className="text-black text-center text-2xl font-bold tracking-wider">𝕮𝖔𝖓𝖋𝖊𝖗𝖊𝖓𝖈𝖊 𝕽𝖔𝖔𝖒  𝕭𝖔𝖔𝓚𝖎𝖓𝖌</span>

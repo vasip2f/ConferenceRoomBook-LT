@@ -2,7 +2,7 @@ const express = require('express');
 const { model } = require("mongoose");
 const Event = require('../modal/Event');
 const moment = require('moment-timezone');
-const userdetail = require('../modal/User')
+const userdetail = require('../modal/User');
 
 
 // Create a new event
@@ -37,7 +37,15 @@ const CreateEvent = async (req, res) => {
             User
 
         });
-        res.status(201).json({ message: "data posted" })
+        const eventId = event._id.toString(); // Get the event ID
+
+        console.log("Room Name:", event.roomName);
+        console.log("Start Time:", event.StartTime);
+        console.log("End Time:", event.EndTime);
+        console.log(eventId)
+
+
+        res.status(201).json({ message: "data posted", eventId})
 
     } catch (err) {
         res.status(400).json({ err, message: "somting went wrong" })
